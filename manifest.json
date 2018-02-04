@@ -1,0 +1,25 @@
+{
+    "manifest_version": 2,
+    "name": "百度莱茨狗",
+    "description": "百度莱茨狗抢购插件",
+    "version": "1.01",
+    "background": {
+        "page": "background.html"
+    },
+    "browser_action": {
+        "default_icon": "icon.png",
+        "default_title": "百度莱茨狗抢购插件"
+    },
+    "permissions": [       
+        "tabs",            
+        "*://*/*",         
+        "webRequestBlocking",
+        "webRequest",
+        "browsingData",
+        "storage",
+        "unlimitedStorage"
+    ],
+    "icons" : {
+        "128": "icon.png"
+    }
+}
