@@ -5,29 +5,10 @@
 var apiQueryPetsOnSale = 'https://pet-chain.baidu.com/data/market/queryPetsOnSale';
 var apiTxnCreate = 'https://pet-chain.baidu.com/data/txn/create';
 
-// 等级配置
-var degreeConf = [{
-    desc: '普通',
-    amount: 5
-},{
-    desc: '稀有',
-    amount: 10
-},{
-    desc: '卓越',
-    amount: 30
-},{
-    desc: '史诗',
-    amount: 40
-},{
-    desc: '神话',
-    amount: 100
-},{
-    desc: '传说',
-    amount: 100
-}];
-
 function getBaiduDogs()
 {
+    // 等级配置
+    var degreeConf = options.getDegreeConf();
     $.ajax({
         type: 'POST',
         url: apiQueryPetsOnSale,
@@ -49,9 +30,9 @@ function getBaiduDogs()
             console.table(res.data.petsOnSale);
 
             $.each(petsOnSale, function(index, item){
-                var degree = degreeConf[item.rareDegree] || {desc: '未知', amount: 5};
-                var amount = degree.amount || 5;
-                if (item.amount <= amount) {
+                var degree = degreeConf[item.rareDegree] || {desc: '未知', buyAmount: 5};
+                var buyAmount = degree.buyAmount || 5;
+                if (item.amount <= buyAmount) {
                     $.ajax({
                         type: 'POST',
                         url: apiTxnCreate,
@@ -64,7 +45,7 @@ function getBaiduDogs()
                         }),
                         success:function(res2){
                             console.log("尝试购买：ID["+item.id + "],级别[" + item.rareDegree + "],价格[" + item.amount + ']')
-                            console.log("命中策略：等级["+degree.desc + "],最高价格[" + degree.amount + ']')
+                            console.log("命中策略：等级["+degree.desc + "],最高价格[" + degree.buyAmount + ']')
                             if (res2.errorNo == 0) {
                                 console.log("抢到啦！！！！！")
                             } else {

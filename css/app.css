@@ -1,0 +1,12 @@
+body {
+    min-height: 75rem;
+    padding-top: 2rem;
+    background: #f9fafd;
+    font-family: PingFang SC,Hiragino Sans GB,Microsoft YaHei,STHeiti,WenQuanYi Micro Hei,Helvetica,Arial,sans-serif;
+    color: rgba(0,0,0,.8);
+}
+
+a {
+    /*color: inherit;*/
+    text-decoration: none;
+}
