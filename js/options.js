@@ -51,13 +51,32 @@ var options = {
                 degreeConf[id].buyAmount = buyAmount;
             }
 
-            utils.setStorage("degreeConf", degreeConf);
-            alert("保存成功");
+            //utils.setStorage("degreeConf", degreeConf);
+            //alert("保存成功");
+			saveConfig(degreeConf)
         });
     },
 };
 
+/*加载配置*/
+function getConfig(){
+	chrome.extension.sendMessage({cmd:"get_config"}, function (response) {
+		var data = response.data;
+		console.log(data);
+	});
+}
+
+/*保存配置*/
+function saveConfig(data){
+	chrome.extension.sendMessage({cmd:"save_config",data:data}, function (response) {
+		if(response.status == 1) {
+			alert('保存成功');
+		}
+	});
+}
+
 $(function(){
+	getConfig();
     options.displayDegreeConf(); 
     options.saveDegreeConf(); 
 });
