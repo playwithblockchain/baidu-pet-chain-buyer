@@ -24,23 +24,32 @@ var options = {
         buyAmount: 100,
         saleAmount: 0,
     }],
-    getDegreeConf : function() {
-        return utils.getStorage("degreeConf", true) || options.defaultDegreeConf;
-    },
+	saveBgConfig : function(data) {
+		chrome.extension.sendMessage({cmd:"save_config",data:data}, function (response) {
+			if(response.status == 1) {
+				//save success
+			}
+		});
+	},
     displayDegreeConf : function() {
-        var degreeConf = options.getDegreeConf();
-        var th = '';
-        $.each(degreeConf,function(k, v) {
-            th += '<tr class="confItem">\
-                    <td><span>' + v.desc + '</span> <input type="text" name="id" value="' + k + '" class="hide" /></td>\
-                    <td><input type="text" name="buyAmount" value="' + v.buyAmount + '" class="editBox input-large" /></td>\
-                </tr>';
-        });
-        $(th).appendTo($("#degreeConf"));
+		chrome.extension.sendMessage({cmd:"get_config"}, function (response) {
+			var degreeConf = response.data;
+			if(degreeConf == '') {
+				degreeConf = options.defaultDegreeConf;
+			}
+	        var th = '';
+	        $.each(degreeConf,function(k, v) {
+	            th += '<tr class="confItem">\
+	                    <td><span>' + v.desc + '</span> <input type="text" name="id" value="' + k + '" class="hide" /></td>\
+	                    <td><input type="text" name="buyAmount" value="' + v.buyAmount + '" class="editBox input-large" /></td>\
+	                </tr>';
+	        });
+	        $(th).appendTo($("#degreeConf"));	
+		}); 
     },
     saveDegreeConf : function() {
         $("#saveDegreeConf").click(function(){
-            var degreeConf = options.getDegreeConf();
+			var degreeConf = options.defaultDegreeConf;
             var confItems = $("#degreeConf .confItem");
             for (var i = confItems.length - 1; i >= 0; i--) {
                 var item = confItems[i];
@@ -50,33 +59,12 @@ var options = {
 
                 degreeConf[id].buyAmount = buyAmount;
             }
-
-            //utils.setStorage("degreeConf", degreeConf);
-            //alert("保存成功");
-			saveConfig(degreeConf)
+			options.saveBgConfig(degreeConf)
         });
     },
 };
 
-/*加载配置*/
-function getConfig(){
-	chrome.extension.sendMessage({cmd:"get_config"}, function (response) {
-		var data = response.data;
-		console.log(data);
-	});
-}
-
-/*保存配置*/
-function saveConfig(data){
-	chrome.extension.sendMessage({cmd:"save_config",data:data}, function (response) {
-		if(response.status == 1) {
-			alert('保存成功');
-		}
-	});
-}
-
 $(function(){
-	getConfig();
     options.displayDegreeConf(); 
     options.saveDegreeConf(); 
 });
