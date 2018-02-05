@@ -20,7 +20,7 @@ function getBaiduDogs(degreeConf)
             "petIds":[],
             "lastAmount":null,
             "lastRareDegree":null,
-            "requestId":1517730660382,
+            "requestId": new Date().getTime(),
             "appId":1,
             "tpl":""
         }),
@@ -32,14 +32,15 @@ function getBaiduDogs(degreeConf)
             $.each(petsOnSale, function(index, item){
                 var degree = degreeConf[item.rareDegree] || {desc: '未知', buyAmount: 5};
                 var buyAmount = degree.buyAmount || 5;
-                if (item.amount <= buyAmount) {
+                if (parseFloat(item.amount) <= parseFloat(buyAmount)) {
                     $.ajax({
                         type: 'POST',
                         url: apiTxnCreate,
                         contentType : 'application/json',
                         data: JSON.stringify({
                             "petId":item.petId,
-                            "requestId":1517730660382,
+                            "requestId": new Date().getTime(),
+                            "amount": item.amount,
                             "appId":1,
                             "tpl":""
                         }),
