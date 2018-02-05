@@ -5,10 +5,10 @@
 var apiQueryPetsOnSale = 'https://pet-chain.baidu.com/data/market/queryPetsOnSale';
 var apiTxnCreate = 'https://pet-chain.baidu.com/data/txn/create';
 
-function getBaiduDogs()
+function getBaiduDogs(degreeConf)
 {
     // 等级配置
-    var degreeConf = options.getDegreeConf();
+    //var degreeConf = options.getDegreeConf();
     $.ajax({
         type: 'POST',
         url: apiQueryPetsOnSale,
@@ -58,8 +58,3 @@ function getBaiduDogs()
         }
     });
 }
-
-console.log("start get dogs....\n")
-setInterval(function(){
-    getBaiduDogs();
-}, 1000);
