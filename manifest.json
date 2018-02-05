@@ -13,7 +13,7 @@
     },
     "permissions": [       
         "tabs",            
-        "*://*/*",         
+        "https://pet-chain.baidu.com/*",         
         "webRequestBlocking",
         "webRequest",
         "browsingData",
@@ -23,5 +23,12 @@
     "icons" : {
         "128": "icon.png"
     },
-    "options_page":"options.html"
+    "options_page":"options.html",
+	"content_scripts": [
+	    {
+	      "matches": ["https://pet-chain.baidu.com/*","http://pet-chain.baidu.com/*"],
+		  "run_at": "document_end",
+	      "js": ["js/jquery.min.js","js/utils.js","js/app.js","js/content.js"]
+	    }
+	]
 }

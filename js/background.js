@@ -1,17 +1,3 @@
-/*
- * @author t@tabalt.net
- */
-function run() {
-    chrome.tabs.executeScript(null, {file: "js/jquery.min.js"});
-    chrome.tabs.executeScript(null, {file: "js/utils.js"});
-    chrome.tabs.executeScript(null, {file: "js/options.js"});
-    chrome.tabs.executeScript(null, {file: "js/app.js"});
-}
-
-// chrome.browserAction.onClicked.addListener(function(){ 
-//     run();
-// });
-
 chrome.extension.onMessage.addListener(function (request, sender, sendResponse) {
 	if(request.cmd == 'save_config') {
 		saveConfigData(request.data);
@@ -21,20 +7,6 @@ chrome.extension.onMessage.addListener(function (request, sender, sendResponse) 
 		sendResponse({data:data});
 	}
 });
-
-/*
-function run(){
-	console.log("start get dogs....\n")
-	setInterval(function(){
-		var degreeConf = getConfigData();
-		if(degreeConf == '') {
-			degreeConf = defaultDegreeConf;
-		}
-		getBaiduDogs(degreeConf);
-		console.log("ssssss");
-	}, 1000);
-}
-*/
 
 // 保存配置
 function saveConfigData(data) {
