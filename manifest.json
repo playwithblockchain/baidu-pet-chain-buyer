@@ -4,7 +4,7 @@
     "description": "百度莱茨狗抢购插件",
     "version": "1.10",
 	"background": {
-	       "scripts": ["js/jquery.min.js","js/utils.js","js/background.js"]
+	       "scripts": ["js/jquery.min.js","js/utils.js", "js/background.js"]
 	},
     "browser_action": {
         "default_icon": "icon.png",
