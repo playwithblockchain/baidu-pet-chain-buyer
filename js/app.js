@@ -32,7 +32,7 @@ function getBaiduDogs(degreeConf)
             $.each(petsOnSale, function(index, item){
                 var degree = degreeConf[item.rareDegree] || {desc: '未知', buyAmount: 5};
                 var buyAmount = degree.buyAmount || 5;
-                if (item.amount <= buyAmount) {
+                if (pasreFloat(item.amount) <= parseFloat(buyAmount)) {
                     $.ajax({
                         type: 'POST',
                         url: apiTxnCreate,
