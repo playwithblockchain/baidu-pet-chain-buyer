@@ -8,7 +8,7 @@ chrome.extension.onMessage.addListener(
 });
 
 function run(){
-	var degreeConf = [{
+	var defaultDegreeConf = [{
 	        desc: '普通',
 	        buyAmount: 100,
 	        saleAmount: 0,
@@ -37,7 +37,7 @@ function run(){
 	chrome.extension.sendMessage({cmd:"get_config"}, function (response) {
 		var degreeConf = response.data;
 		if(degreeConf == '') {
-			degreeConf = options.defaultDegreeConf;
+			degreeConf = defaultDegreeConf;
 		}
 		console.log("start get dogs....\n")
 		setInterval(function(){
