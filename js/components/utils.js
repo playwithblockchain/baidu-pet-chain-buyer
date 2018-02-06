@@ -1,4 +1,8 @@
-var utils = {
+/*
+ * @author t@tabalt.net
+ */
+
+var Utils = {
     //合并数组
     arrayMerge : function (array1, array2) {
         $.each(array2, function(k, v) {

@@ -19,5 +19,6 @@ https://chrome.google.com/webstore/detail/%E7%99%BE%E5%BA%A6%E8%8E%B1%E8%8C%A8%E
 
 ### 版本更新
 
+* 2017-02-07 2.0版发布
 * 2017-02-05 支持配置买入价格
 * 2017-02-04 首次发布&开源
