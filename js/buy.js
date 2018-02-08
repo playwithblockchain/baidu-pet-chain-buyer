@@ -4,6 +4,12 @@
 
 $(function(){
     setInterval(function(){
-        Buyer.start();
-    }, 1000);
+        Buyer.ShowPetsOnSale();
+    }, 1200);
+
+    Buyer.InitBuyModal();
+
+    setInterval(function(){
+        Buyer.TryBuyPets();
+    }, 100);
 });

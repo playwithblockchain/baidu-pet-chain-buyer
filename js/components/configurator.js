@@ -56,7 +56,7 @@ var Configurator = {
             }
 			
             Utils.setStorage("degreeConf", degreeConf);
-            alert("保存成功");
+            Alert.Success("保存成功！", 3);
         });
     },
 };

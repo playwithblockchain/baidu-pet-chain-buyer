@@ -105,7 +105,6 @@ a {
  * App
  */
 
-
 .options-left {
   float: left;
   width: 500px;
@@ -114,4 +113,44 @@ a {
 .options-right {
   float: left;
   padding: 0 50px;
+}
+
+/*
+ * Alert
+ */
+
+.alert-top-wrapper {
+  z-index: 100;
+  position: fixed;
+  top: 4rem;
+  left: 0;
+  right: 0;
+  width: 100%;
+  display: inline-block !important;
+  transition: -webkit-transform .5s, opacity .5s;
+  transition: transform .5s, opacity .5s;
+  transition: -webkit-transform cubic-bezier(0.19, 1, 0.22, 1) 0.5s, opacity cubic-bezier(0.19, 1, 0.22, 1) 0.5s;
+  transition: transform cubic-bezier(0.19, 1, 0.22, 1) 0.5s, opacity cubic-bezier(0.19, 1, 0.22, 1) 0.5s;
+  pointer-events: none;
+  text-align: center;
+}
+.alert-top-wrapper.alert-hide {
+  -webkit-transform: translateY(-100%);
+          transform: translateY(-100%);
+  opacity: 0;
+}
+.alert-top-wrapper * {
+  pointer-events: auto;
+  pointer-events: initial;
+  text-align: left;
+  text-align: initial;
+}
+.alert-top-wrapper .alert {
+  display: inline-block;
+  margin-bottom: 0;
+}
+@media (max-width: 767px) {
+  .alert-top-wrapper .alert {
+    min-width: 80%;
+  }
 }
