@@ -17,6 +17,7 @@ https://chrome.google.com/webstore/detail/%E7%99%BE%E5%BA%A6%E8%8E%B1%E8%8C%A8%E
 
 ### 联系作者
 
+<p>关注作者公众号</p>
 <p><img src="images/wechat-qrcode.jpg" width="128" height="128" /></p>
 
         
