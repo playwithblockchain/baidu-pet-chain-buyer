@@ -73,7 +73,8 @@ var Buyer = {
                         <td>' + i + '</td>\
                         <td>' + pet.id + '</td>\
                         <td>' + pet.petId + '</td>\
-                        <td>' + pet.birthType + '</td>\
+                        <td>第' + pet.birthType + '代</td>\
+                        <td>' + degree.desc + '</td>\
                         <td><font color="' + needToBuyColor + '">' + pet.amount + '</font></td>\
                     </tr>';
                 }
