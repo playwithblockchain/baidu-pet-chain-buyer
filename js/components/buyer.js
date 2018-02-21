@@ -15,6 +15,61 @@ var Buyer = {
     
     DegreeConf: Configurator.getDegreeConf(),
 
+    InitLogCaptcha: function() {
+        Buyer.displayVerifyImage();
+        $('#buyVerifyRefresh').click(function(){
+            Buyer.displayVerifyImage();
+        });
+
+        $('#logCaptchaPanel form').submit(function(){
+            Buyer.submitCaptcha();
+            return false;
+        });
+
+        $('#buyVerifyCode').keyup(function(){
+            var verifyCode = $(this).val();
+            if (verifyCode.length == 4) {
+                Buyer.submitCaptcha();
+            }
+        });
+        $('#logCaptchaSubmit').click(function(){
+            Buyer.submitCaptcha();
+        });
+
+        $('#buyVerifyCode').val('').focus();
+    },
+
+    DisplayLogCaptcha: function() {
+        var captchas = Configurator.getLogCaptcha();
+        var th = '';
+        $.each(captchas,function(k, v) {
+            th += '<tr>\
+                    <td><img style="width:80px; height: 30px;" src="' + v.Src + '" ></td>\
+                    <td><span>' + v.Seed + '</span></td>\
+                    <td><span>' + v.Code + '</span></td>\
+                    <td><span>' + v.Time + '</span></td>\
+                </tr>';
+        });
+        $("#logCaptchaList tbody").html("").append(th);
+    },
+
+    submitCaptcha: function() {
+        var verifySeed = $('#buyVerifySeed').val();
+        var verifyCode = $('#buyVerifyCode').val();
+        if (verifyCode == '' || verifyCode.length != 4) {
+            Alert.Error("请填写4位验证码！", 3);
+            return
+        }
+
+        var verifySrc = $('#buyVerifyImage').attr('src');
+
+        Configurator.saveLogCaptcha(verifySeed, verifyCode, verifySrc)
+
+        Buyer.displayVerifyImage();
+        $('#buyVerifyCode').val('').focus();
+        Buyer.DisplayLogCaptcha();
+    },
+
     InitBuyModal: function() {
         $('#buyModalCenter form').submit(function(){
             Buyer.submitBuy();
@@ -34,6 +89,8 @@ var Buyer = {
         $('#buyModalSubmit').click(function(){
             Buyer.submitBuy();
         });
+
+        Alert.Success("已开始后台扫描低价狗狗，有符合条件的狗狗会弹验证码输入框哦~", 5);
     },
 
     ShowPetsOnSale: function() {
@@ -73,7 +130,7 @@ var Buyer = {
                         <td>' + i + '</td>\
                         <td>' + pet.id + '</td>\
                         <td>' + pet.petId + '</td>\
-                        <td>第' + pet.birthType + '代</td>\
+                        <td>第' + pet.generation + '代</td>\
                         <td>' + degree.desc + '</td>\
                         <td><font color="' + needToBuyColor + '">' + pet.amount + '</font></td>\
                     </tr>';
@@ -109,11 +166,13 @@ var Buyer = {
             Buyer.TryedBuyMap = [];
         }
         Buyer.startBuyProcess();
-        Buyer.displayBuyModal(toBuy.degree, toBuy.pet);
+        var captcha = Configurator.consumeLogCaptcha();
+        Buyer.displayBuyModal(toBuy.degree, toBuy.pet, captcha);
+        
         Buyer.TryedBuyMap[toBuy.pet.id] = true;
     },
 
-    displayBuyModal: function(degree, pet) {
+    displayBuyModal: function(degree, pet, captcha) {
         var detail = '\
         <p>尝试购买：ID[<span>'+pet.id+'</span>],\
         级别[<span>'+pet.rareDegree+'</span>],\
@@ -126,10 +185,10 @@ var Buyer = {
         $("#buyValidCode").val(pet.validCode);
         $("#buyPetAmount").val(pet.amount);
 
-        Buyer.displayVerifyImage();
+        Buyer.displayVerifyImage(captcha);
 
         $('#buyModalCenter').on('shown.bs.modal', function () {
-            $('#buyVerifyCode').val('').focus();
+            $('#buyVerifyCode').focus();
         }).on('hidden.bs.modal', function () {
             Buyer.stopBuyProcess();
         });
@@ -137,7 +196,22 @@ var Buyer = {
         $('#buyModalCenter').modal('show');
     },
 
-    displayVerifyImage: function() {
+    displayVerifyImage: function(captcha) {
+        var _display = function(seed, src, code) {
+            $("#buyVerifySeed").val(seed);
+            $('#buyVerifyImage').attr('src', src);
+            $('#buyVerifyCode').val(code);
+        }
+
+        if (captcha != undefined) {
+            _display(captcha.Seed, captcha.Src, captcha.Code)
+            Buyer.submitBuy();
+            setTimeout(function(){
+                $('#buyModalCenter').modal('hide');
+            }, 1*1000);
+            return;
+        }
+
         $.ajax({
             type: 'GET',
             url: Buyer.ApiUrl.CaptchaGen,
@@ -148,8 +222,9 @@ var Buyer = {
                 "tpl":""
             },
             success:function(res){
-                $("#buyVerifySeed").val(res.data.seed);
-                $('#buyVerifyImage').attr('src', 'data:image/jpeg;base64,'+res.data.img);
+                var seed = res.data.seed;
+                var src = 'data:image/jpeg;base64,'+res.data.img;
+                _display(seed, src, '');
             }
         });
     },
@@ -195,13 +270,12 @@ var Buyer = {
                     var msg = '没抢到：错误码[' + res2.errorNo + '],错误信息[' + res2.errorMsg + ']'
                     Alert.Error(msg, 3);
                     console.log(msg)
-                    console.log('petId:' + petId + ',petAmount:' + petAmount)
+                    console.log('petId:' + petId + ',petAmount:' + petAmount + ',seed:' + verifySeed + ',captcha:' + verifyCode)
                 }
-
                 $('#buyModalCenter').modal('hide');
             },
             error:function(){
-                Alert.Error("出错啦！", 3);
+                Alert.Error("接口出错啦！", 3);
                 $('#buyModalCenter').modal('hide');
             }
         });

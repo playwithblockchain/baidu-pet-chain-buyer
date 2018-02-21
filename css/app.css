@@ -111,14 +111,20 @@ main {
  * App
  */
 
-.options-left {
+.options-left, .captcha-left{
   float: left;
   width: 500px;
 }
 
-.options-right {
+.options-right, .captcha-right{
   float: left;
   padding: 0 50px;
+}
+
+#clearlogCaptcha {
+  font-size: 14px;
+  font-weight: normal;
+  margin-left: 10px;
 }
 
 /*
