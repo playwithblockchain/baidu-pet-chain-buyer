@@ -65,13 +65,13 @@ var Configurator = {
     clearLogCaptcha: function() {
         return Utils.setStorage("logCaptcha", []);
     },
-    saveLogCaptcha: function(seed, code, src) {
+    saveLogCaptcha: function(seed, code, src, time) {
         var captchas = Configurator.getLogCaptcha();
         captchas.push({
             Seed: seed,
             Code: code,
             Src: src,
-            Time: Configurator.dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss"),
+            Time: time ? time : Configurator.dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss"),
 
         });
         

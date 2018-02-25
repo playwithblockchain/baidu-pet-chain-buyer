@@ -56,6 +56,7 @@ var Buyer = {
     submitCaptcha: function() {
         var verifySeed = $('#buyVerifySeed').val();
         var verifyCode = $('#buyVerifyCode').val();
+        var verifyTime = $('#buyValidTime').val();
         if (verifyCode == '' || verifyCode.length != 4) {
             Alert.Error("请填写4位验证码！", 3);
             return
@@ -63,7 +64,7 @@ var Buyer = {
 
         var verifySrc = $('#buyVerifyImage').attr('src');
 
-        Configurator.saveLogCaptcha(verifySeed, verifyCode, verifySrc)
+        Configurator.saveLogCaptcha(verifySeed, verifyCode, verifySrc, verifyTime);
 
         Buyer.displayVerifyImage();
         $('#buyVerifyCode').val('').focus();
@@ -197,10 +198,13 @@ var Buyer = {
     },
 
     displayVerifyImage: function(captcha) {
-        var _display = function(seed, src, code) {
+        var _display = function(seed, src, code, time) {
             $("#buyVerifySeed").val(seed);
             $('#buyVerifyImage').attr('src', src);
             $('#buyVerifyCode').val(code);
+            if (time) {
+                $('#buyValidTime').val(time);
+            };
         }
 
         if (captcha != undefined) {
@@ -224,7 +228,8 @@ var Buyer = {
             success:function(res){
                 var seed = res.data.seed;
                 var src = 'data:image/jpeg;base64,'+res.data.img;
-                _display(seed, src, '');
+                var time = Configurator.dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss");
+                _display(seed, src, '',time);
             }
         });
     },
