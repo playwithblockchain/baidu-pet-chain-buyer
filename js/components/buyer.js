@@ -227,7 +227,7 @@ var Buyer = {
                 var seed = res.data.seed;
                 var src = 'data:image/jpeg;base64,'+res.data.img;
                 var time = Configurator.dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss");
-                _display(seed, src, '',time);
+                _display(seed, src, '', time);
             }
         });
     },
