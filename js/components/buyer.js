@@ -56,7 +56,7 @@ var Buyer = {
     submitCaptcha: function() {
         var verifySeed = $('#buyVerifySeed').val();
         var verifyCode = $('#buyVerifyCode').val();
-        var verifyTime = $('#buyValidTime').val();
+        var verifyTime = $('#buyVerifyTime').val();
         if (verifyCode == '' || verifyCode.length != 4) {
             Alert.Error("请填写4位验证码！", 3);
             return
@@ -202,9 +202,7 @@ var Buyer = {
             $("#buyVerifySeed").val(seed);
             $('#buyVerifyImage').attr('src', src);
             $('#buyVerifyCode').val(code);
-            if (time) {
-                $('#buyValidTime').val(time);
-            };
+            $('#buyValidTime').val(time);
         }
 
         if (captcha != undefined) {
