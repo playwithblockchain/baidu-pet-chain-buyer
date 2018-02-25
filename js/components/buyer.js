@@ -202,7 +202,7 @@ var Buyer = {
             $("#buyVerifySeed").val(seed);
             $('#buyVerifyImage').attr('src', src);
             $('#buyVerifyCode').val(code);
-            $('#buyValidTime').val(time);
+            $('#buyVerifyTime').val(time);
         }
 
         if (captcha != undefined) {
