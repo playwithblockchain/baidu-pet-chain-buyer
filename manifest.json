@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "百度莱茨狗",
     "description": "百度莱茨狗抢购插件",
-    "version": "2.1.1",
+    "version": "2.1.2",
 	"background": {
         "scripts": ["js/libs/jquery.min.js", "js/background.js"]
 	},
