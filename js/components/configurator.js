@@ -63,7 +63,17 @@ var Configurator = {
         return Utils.getStorage("logCaptcha", true) || [];
     },
     clearLogCaptcha: function() {
-        return Utils.setStorage("logCaptcha", []);
+        var logCaptcha = Configurator.getLogCaptcha();
+        clearedCaptcha = [];
+        for (var i = 0; i <= logCaptcha.length - 1; i++) {
+            var captcha = logCaptcha[i];
+            var captchaTime = Date.parse(new Date(captcha.Time));
+            var nowTime = Date.parse(new Date());
+            if ((nowTime - captchaTime) < 60000) {
+                clearedCaptcha.push(captcha)
+            }
+        }
+        return Utils.setStorage("logCaptcha", clearedCaptcha);
     },
     saveLogCaptcha: function(seed, code, src, time) {
         var captchas = Configurator.getLogCaptcha();
@@ -71,11 +81,11 @@ var Configurator = {
             Seed: seed,
             Code: code,
             Src: src,
-            Time: time ? time : Configurator.dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss"),
-
+            Time: time ? time : Configurator.dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss")
         });
         
         Utils.setStorage("logCaptcha", captchas);
+        Configurator.clearLogCaptcha();
         Alert.Success("保存成功！", 3);
     },
     consumeLogCaptcha: function(seed, code, src) {
