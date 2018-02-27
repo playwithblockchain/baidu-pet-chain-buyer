@@ -91,7 +91,7 @@ var Buyer = {
             Buyer.submitBuy();
         });
 
-        Alert.Success("已开始后台扫描低价狗狗，有符合条件的狗狗会弹验证码输入框哦~", 5);
+        Alert.Success("已开始后台扫描狗狗，有符合条件的狗狗会弹验证码输入框哦~", 5);
     },
 
     ShowPetsOnSale: function() {
@@ -102,7 +102,7 @@ var Buyer = {
             data: JSON.stringify({
                 "pageNo":1,
                 "pageSize":20,
-                "querySortType":"AMOUNT_ASC",
+                "querySortType":"CREATETIME_DESC",
                 "petIds":[],
                 "lastAmount":null,
                 "lastRareDegree":null,
