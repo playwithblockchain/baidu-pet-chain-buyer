@@ -94,13 +94,13 @@ var Buyer = {
         Alert.Success("已开始后台扫描狗狗，有符合条件的狗狗会弹验证码输入框哦~", 5);
     },
 
-    ShowPetsOnSale: function() {
+    ShowPetsOnSale: function(pageNo) {
         $.ajax({
             type: 'POST',
             url: Buyer.ApiUrl.QueryPetsOnSale,
             contentType : 'application/json',
             data: JSON.stringify({
-                "pageNo":1,
+                "pageNo":pageNo,
                 "pageSize":20,
                 "querySortType":"CREATETIME_DESC",
                 "petIds":[],
@@ -132,7 +132,7 @@ var Buyer = {
                         <td>' + pet.id + '</td>\
                         <td>' + pet.petId + '</td>\
                         <td>第' + pet.generation + '代</td>\
-                        <td>' + degree.desc + '</td>\
+                        <td>' + degree.colorDesc + '</td>\
                         <td><font color="' + needToBuyColor + '">' + pet.amount + '</font></td>\
                     </tr>';
                 }

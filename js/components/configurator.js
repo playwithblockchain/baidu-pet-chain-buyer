@@ -5,26 +5,32 @@
 var Configurator = {
     defaultDegreeConf: [{
         desc: '普通',
+		colorDesc:"<span style='color:black'>普通</span>",
         buyAmount: 100,
         saleAmount: 0,
     },{
         desc: '稀有',
+		colorDesc:"<span style='color:green'>稀有</span>",
         buyAmount: 100,
         saleAmount: 0,
     },{
         desc: '卓越',
+		colorDesc:"<span style='color:#0000ff'>卓越</span>",
         buyAmount: 100,
         saleAmount: 0,
     },{
         desc: '史诗',
+		colorDesc:"<span style='color:#db70db'>史诗</span>",
         buyAmount: 100,
         saleAmount: 0,
     },{
         desc: '神话',
+		colorDesc:"<span style='color:#871f78'>神话</span>",
         buyAmount: 100,
         saleAmount: 0,
     },{
         desc: '传说',
+		colorDesc:"<span style='color:#ff7f00'>传说</span>",
         buyAmount: 100,
         saleAmount: 0,
     }],
@@ -36,7 +42,7 @@ var Configurator = {
         var th = '';
         $.each(degreeConf,function(k, v) {
             th += '<tr class="confItem">\
-                    <td><span>' + v.desc + '</span> <input type="text" name="id" value="' + k + '" style="display:none;" /></td>\
+                    <td><span>' + v.desc + '</span><input type="hidden" value="' + v.colorDesc + '"/> <input type="text" name="id" value="' + k + '" style="display:none;" /></td>\
                     <td><input type="text" name="buyAmount" value="' + v.buyAmount + '" class="editBox input-large" /></td>\
                 </tr>';
         });
@@ -51,8 +57,9 @@ var Configurator = {
 
                 var id = $(item).find("input[name=id]").val();
                 var buyAmount = $(item).find("input[name=buyAmount]").val();
-
+				var colorDesc = $(item).find("input[type=hidden]").val();
                 degreeConf[id].buyAmount = buyAmount;
+				degreeConf[id].colorDesc = colorDesc;
             }
 			
             Utils.setStorage("degreeConf", degreeConf);
