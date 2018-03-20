@@ -42,7 +42,7 @@
                   低价买狗 <span class="sr-only">(current)</span>
                 </a>
               </li>
-			  <li class="nav-item">
+              <li class="nav-item">
                 <a class="nav-link active" href="mine.html">
                   <span data-feather="inbox"></span>
                   我的狗窝
@@ -100,57 +100,63 @@
           </div>
 
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-            <h1 class="h4">我的狗窝</h1>
+            <h1 class="h4">我的狗窝 <h6 id="centerTitle">账户信息</6></h1>
             <div class="btn-toolbar mb-2 mb-md-0">
-			<button type="button" id="refreshPetsList" class="btn btn-success">刷新</button>
+			<button type="button" id="refreshPetsList" class="btn btn-success btn-sm">刷新</button>
             </div>
           </div>
-
-          <div class="table-responsive border-bottom">
-		    <h5 id="centerTitle">账户信息</h5>
+  
+          <div class="table-responsive ">
+            <!-- <div class="mb-3">
+              <h6 id="centerTitle">账户信息</h6>
+            </div> -->
             <div class="options-left">
-				<h5>我的狗狗</h5>
-				<button type="button" id="batchSale" class="btn btn-success">批量上架</button>
-				<button type="button" id="batchCancel" class="btn btn-success">批量下架</button>
-				<table class="table table-striped table-sm" style="margin-top:17px" id="petsList">
-				  <thead>
-					<tr>
-					  <th><input type="checkbox" id="petsListChk"/></th>
-					  <th>宠物标识</th>
-					  <th>代数</th>
-					  <th>级别</th>
-					  <th>价格</th>
-					  <th>操作</th>
-					</tr>
-				  </thead>
-				  <tbody>
-					<tr>
-					  <td colspan="6" style="text-align: center;">数据加载中，请稍后...</td>
-					</tr>
-				  </tbody>
-				</table>
+              <div class="mb-3">
+                <h5>我的狗狗</h5>
+                <button type="button" id="batchSale" class="btn btn-success btn-sm">批量上架</button>
+                <button type="button" id="batchCancel" class="btn btn-success btn-sm">批量下架</button>
+              </div>
+      				<table class="table table-striped table-sm" style="margin-top:17px" id="petsList">
+      				  <thead>
+      					<tr>
+      					  <th><input type="checkbox" id="petsListChk"/></th>
+      					  <th>宠物标识</th>
+      					  <th>代数</th>
+      					  <th>级别</th>
+      					  <th>价格</th>
+      					  <th>操作</th>
+      					</tr>
+      				  </thead>
+      				  <tbody>
+      					<tr>
+      					  <td colspan="6" style="text-align: center;">数据加载中，请稍后...</td>
+      					</tr>
+      				  </tbody>
+      				</table>
             </div>
             <div class="" style="float:left; width: 440px; padding-left: 40px">
-				<h5>我的订单</h5>
-				<button type="button" id="prePage" class="btn btn-success">&lt;&nbsp;上一页</button>
-				<button type="button" id="nextPage" class="btn btn-success">下一页&nbsp;&gt;</button>
-				<input type="hidden" id="orderListPageNo" />
-				<table class="table table-striped table-sm" style="margin-top:17px" id="petsOrderList">
-				  <thead>
-					<tr>
-					  <th>序号</th>
-					  <th>宠物标识</th>
-					  <th>交易时间</th>
-					  <th>价格</th>
-					  <th>操作</th>
-					</tr>
-				  </thead>
-				  <tbody>
-					<tr>
-					  <td colspan="6" style="text-align: center;">数据加载中，请稍后...</td>
-					</tr>
-				  </tbody>
-				</table>
+              <div class="mb-3">
+        				<h5>我的订单</h5>
+        				<button type="button" id="prePage" class="btn btn-success btn-sm">&lt;&nbsp;上一页</button>
+        				<button type="button" id="nextPage" class="btn btn-success btn-sm">下一页&nbsp;&gt;</button>
+        				<input type="hidden" id="orderListPageNo" />
+              </div>
+      				<table class="table table-striped table-sm" style="margin-top:17px" id="petsOrderList">
+      				  <thead>
+      					<tr>
+      					  <th>序号</th>
+      					  <th>宠物标识</th>
+      					  <th>交易时间</th>
+      					  <th>价格</th>
+      					  <th>操作</th>
+      					</tr>
+      				  </thead>
+      				  <tbody>
+      					<tr>
+      					  <td colspan="6" style="text-align: center;">数据加载中，请稍后...</td>
+      					</tr>
+      				  </tbody>
+      				</table>
             </div>
           </div>
         </main>
