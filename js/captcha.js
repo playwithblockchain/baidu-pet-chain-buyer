@@ -7,8 +7,11 @@ $(function(){
 
     Buyer.DisplayLogCaptcha();
 
-    $("#clearlogCaptcha").click(function(){
+    setInterval(function(){
         Configurator.clearLogCaptcha();
-        window.location.href=window.location.href;
-    });
+    }, 100);
+
+    setInterval(function(){
+        Buyer.DisplayLogCaptcha();
+    }, 100);
 });
