@@ -43,7 +43,7 @@ var Configurator = {
         $.each(degreeConf,function(k, v) {
             th += '<tr class="confItem">\
                     <td><span>' + v.desc + '</span>\<input type="text" name="id" value="' + k + '" style="display:none;" /></td>\
-                    <td><input type="text" name="color" value="' + v.color + '"/></td>\
+                    <td><input type="text" name="color" style="color:' + v.color + ';" value="' + v.color + '"/></td>\
                     <td><input type="text" name="buyAmount" value="' + v.buyAmount + '" class="editBox input-large" /></td>\
                 </tr>';
         });
