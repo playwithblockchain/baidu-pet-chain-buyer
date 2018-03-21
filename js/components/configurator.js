@@ -58,9 +58,9 @@ var Configurator = {
 
                 var id = $(item).find("input[name=id]").val();
                 var buyAmount = $(item).find("input[name=buyAmount]").val();
-				var color = $(item).find("input[name=color]").val();
+		var color = $(item).find("input[name=color]").val();
                 degreeConf[id].buyAmount = buyAmount;
-				degreeConf[id].color = color;
+		degreeConf[id].color = color;
             }
 			
             Utils.setStorage("degreeConf", degreeConf);

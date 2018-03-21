@@ -56,7 +56,7 @@ $(function(){
         if (petArray.length > 0) {
             $("#petIdsForSale").val(JSON.stringify(petArray));
 
-			$("#amount").val("").focus();
+	    $("#amount").val("").focus();
             $('#saleModal').modal('show');
         } else {
             Alert.Error("请选择你想上架的狗狗！！", 2);
@@ -84,13 +84,13 @@ $(function(){
         e.stopPropagation();
 
         var pet = $.parseJSON($(this).parent().parent().attr("data"));
-		var petArray = new Array();
-		petArray[0] = pet;
+	var petArray = new Array();
+	petArray[0] = pet;
 
         if ($(this).attr("value") == "上架") {
             $("#petIdsForSale").val(JSON.stringify(petArray));
 
-			$("#amount").val("").focus();
+	    $("#amount").val("").focus();
             $('#saleModal').modal('show');
         } else {
             Center.cancel(pet);

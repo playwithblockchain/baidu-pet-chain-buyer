@@ -108,7 +108,7 @@ var Center = {
                 var th = '';
                 for (var i = 0; i <= petsList.length - 1; i++) {
                     var pet = petsList[i];
-					pet["rowNum"] = i;
+		    pet["rowNum"] = i;
                     
                     var degree = degreeConfig[pet.rareDegree];
                     
@@ -237,8 +237,8 @@ var Center = {
                 if (res.errorNo == "00") {
                     Alert.Success("狗狗下架成功！", 2);
 
-					pet.amount = 0;
-					Center.updateMinePetList(pet);
+		    pet.amount = 0;
+		    Center.updateMinePetList(pet);
                 } else {
                     Alert.Error(res.errorMsg, 2);
                 }
@@ -249,9 +249,9 @@ var Center = {
     cancelAll : function(petArray) {
         for (var i = 0; i < petArray.length; i++) {
             var pet = petArray[i];
-			if (pet) {
-				Center.cancel(pet);
-			}
+	    if (pet) {
+	        Center.cancel(pet);
+            }
         }
     },
 
@@ -274,8 +274,8 @@ var Center = {
                 if (res.errorNo == "00") {
                     Alert.Success("狗狗上架成功！", 2);
 
-					pet.amount = amount;
-					Center.updateMinePetList(pet);
+		    pet.amount = amount;
+		    Center.updateMinePetList(pet);
                 } else {
                     Alert.Error(res.errorMsg, 2);
                 }
@@ -292,21 +292,21 @@ var Center = {
         }
     },
 	
-	updateMinePetList : function(pet) {
-		var trList = $("#petsList").children("tbody").children("tr");
+    updateMinePetList : function(pet) {
+        var trList = $("#petsList").children("tbody").children("tr");
 
-		var index = parseInt(pet.rowNum);
+	var index = parseInt(pet.rowNum);
 
-		// 更新行的JSON数据
-		$(trList[index]).attr("data", JSON.stringify(pet));
+	// 更新行的JSON数据
+	$(trList[index]).attr("data", JSON.stringify(pet));
 
-		// 设置 checkbox未选中
-		$(trList[index]).find("input[type='checkbox']").prop('checked', false);
+	// 设置 checkbox未选中
+	$(trList[index]).find("input[type='checkbox']").prop('checked', false);
 
-		// 设置各列的值（目前只有金额）
-		$($(trList[index]).find("td")[4]).html(pet.amount);
+	// 设置各列的值（目前只有金额）
+	$($(trList[index]).find("td")[4]).html(pet.amount);
 
-		// 按钮文字更新
-		$(trList[index]).find(".saleBtn").attr("value", pet.amount > 0 ? "下架" : "上架");
-	}
+	// 按钮文字更新
+	$(trList[index]).find(".saleBtn").attr("value", pet.amount > 0 ? "下架" : "上架");
+    }
 };
