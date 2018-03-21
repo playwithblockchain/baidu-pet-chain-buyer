@@ -3,8 +3,7 @@
  */
 
 $(function(){
-    function init() 
-    {
+    function init() {
         Center.getMemberInfo();
         Center.getMyPetList(1);
         Center.getMyPetOrderList(1);
@@ -29,7 +28,7 @@ $(function(){
                 var pet = $.parseJSON($(petList[i]).attr("data"));
                 
                 if (parseFloat(pet.amount) > 0) {
-                    petArray[i] = pet.petId;
+                    petArray[i] = pet;
                 }
             }
         }
@@ -44,21 +43,20 @@ $(function(){
     $("#batchSale").click(function () {
         var petList = $("#petsList").children("tbody").children("tr");
 
-        var petIds = "";
+        var petArray = new Array();
         for (var i = 0; i < petList.length; i++) {
             if ($(petList[i]).find("input[type='checkbox']").prop('checked')) {
                 var pet = $.parseJSON($(petList[i]).attr("data"));
                 if (pet.amount == 0) {
-                    petIds += $.parseJSON($(petList[i]).attr("data")).petId + ",";
+                    petArray[i] = pet;
                 }
             }
         }
 
-        if (petIds.length > 0) {
-            petIds = petIds.substr(0, petIds.length - 1);
+        if (petArray.length > 0) {
+            $("#petIdsForSale").val(JSON.stringify(petArray));
 
-            $("#petIdsForSale").val(petIds);
-
+			$("#amount").val("").focus();
             $('#saleModal').modal('show');
         } else {
             Alert.Error("请选择你想上架的狗狗！！", 2);
@@ -68,7 +66,7 @@ $(function(){
     $("#sale").click(function () {
         $(".amountError").html("");
 
-        var petIds = $("#petIdsForSale").val();
+        var petArray = $.parseJSON($("#petIdsForSale").val());
         var amount = $("#amount").val();
 
         if (amount == '' || amount == 'undefined' || parseFloat(amount) <= 0) {
@@ -77,7 +75,7 @@ $(function(){
             return false;
         }
 
-        Center.batchSale(petIds, amount);
+        Center.batchSale(petArray, amount);
 
         $('#saleModal').modal('hide');
     });
@@ -86,13 +84,16 @@ $(function(){
         e.stopPropagation();
 
         var pet = $.parseJSON($(this).parent().parent().attr("data"));
+		var petArray = new Array();
+		petArray[0] = pet;
 
         if ($(this).attr("value") == "上架") {
-            $("#petIdsForSale").val(pet.petId);
+            $("#petIdsForSale").val(JSON.stringify(petArray));
 
+			$("#amount").val("").focus();
             $('#saleModal').modal('show');
         } else {
-            Center.cancel(pet.petId);
+            Center.cancel(pet);
         }
     });
 
