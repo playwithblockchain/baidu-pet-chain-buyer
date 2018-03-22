@@ -128,13 +128,13 @@ var Buyer = {
                         needToBuyColor = 'red';
                     }
 
-                    th += '<tr>\
+                    th += '<tr data=' + JSON.stringify(pet) + '>\
                         <td>' + i + '</td>\
                         <td>' + pet.id + '</td>\
-                        <td>' + pet.petId + '</td>\
                         <td>第' + pet.generation + '代</td>\
                         <td><font color="' + degree.color + '">' + degree.desc + '</font></td>\
                         <td><font color="' + needToBuyColor + '">' + pet.amount + '</font></td>\
+                        <td><input name="buy" type="button" value="购买"/><input name="detailBtn" type="button" value="查看"/></td>\
                     </tr>';
                 }
 

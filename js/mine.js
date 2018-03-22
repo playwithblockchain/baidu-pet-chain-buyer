@@ -84,8 +84,8 @@ $(function(){
         e.stopPropagation();
 
         var pet = $.parseJSON($(this).parent().parent().attr("data"));
-	var petArray = new Array();
-	petArray[0] = pet;
+        var petArray = new Array();
+        petArray[0] = pet;
 
         if ($(this).attr("value") == "上架") {
             $("#petIdsForSale").val(JSON.stringify(petArray));

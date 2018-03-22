@@ -43,6 +43,28 @@ $(function(){
         pageNo ++;
     });
 
+    $("tbody").on("click", "input[name='detailBtn']", function(e) {
+        e.stopPropagation();
+
+        var pet = $.parseJSON($(this).parent().parent().attr("data"));
+
+        Center.getPetById(pet.petId, "petDetail");
+
+        $('#petDetail').modal('show');
+    });
+
+    $("tbody").on("click", "input[name='buy']", function(e) {
+        e.stopPropagation();
+
+        var pet = $.parseJSON($(this).parent().parent().attr("data"));
+
+        var degree = Buyer.DegreeConf[pet.rareDegree] || {desc:'未知',buyAmount:'5.00'};
+
+        var captcha = Configurator.consumeLogCaptcha();
+
+        Buyer.displayBuyModal(degree, pet, captcha);
+    });
+
     function initAutoBuy() {
         if (autoRefreshTaskId != '' && autoRefreshTaskId != null && autoRefreshTaskId != 'undefined') {
 	    clearInterval(autoRefreshTaskId);
