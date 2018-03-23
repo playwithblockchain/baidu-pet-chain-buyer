@@ -102,7 +102,7 @@ $(function(){
 
         var pet = $.parseJSON($(this).parent().parent().attr("data"));
 
-        Center.getPetById(pet.petId, "petDetail");
+        Center.getPetById(pet.petId, "#petDetail .modal-body");
 
         $('#petDetail').modal('show');
     });

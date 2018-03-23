@@ -5,15 +5,6 @@
 <title>百度莱茨狗经营助手</title>
 <link type="text/css" href="css/bootstrap.min.css" rel="stylesheet" />
 <link type="text/css" href="css/app.css" rel="stylesheet" />
-<style>
-	.ulList {
-		list-style:none;overflow:hidden;
-	}
-	.liList {
-		float:left;
-		width : 50%;
-	}
-</style>
 </head>
 <body>
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
@@ -37,13 +28,13 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" href="buy.html">
+                <a class="nav-link" href="buy.html">
                   <span data-feather="arrow-right-circle"></span>
                   低价买狗 <span class="sr-only">(current)</span>
                 </a>
               </li>
-			  <li class="nav-item">
-                <a class="nav-link" href="breedcenter.html">
+              <li class="nav-item">
+                <a class="nav-link active" href="breedcenter.html">
                   <span data-feather="inbox"></span>
                   繁育中心
                 </a>
@@ -105,77 +96,137 @@
           </div>
 
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-            <h1 class="h4">低价买狗</h1>
+            <h1 class="h4">繁育中心</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
             </div>
           </div>
 
           <div class="options-left">
             <div class="mb-3">
+              <h5>人家的狗</h5>
               <button type="button" id="refreshType" class="btn btn-success btn-sm">手动刷新</button>
               <button type="button" id="refresh" class="btn btn-success btn-sm ml-2">刷新购买</button>
             </div>
 
             <div class="table-responsive">
-		      <table class="table table-striped table-sm" style="margin-top:17px; width: 500px" id="petsOnSale">
+		      <table class="table table-striped table-sm" style="margin-top:17px; width: 500px" id="breedCenterTable">
                 <thead>
                   <tr>
                     <th>#</th>
                     <th>Id</th>
                     <th>代数</th>
                     <th>级别</th>
+					<th>休息时间</th>
                     <th>价格</th>
 					<th>操作</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td colspan="6" style="text-align: center;">数据加载中，请稍后...</td>
+                    <td colspan="7" style="text-align: center;">数据加载中，请稍后...</td>
+                  </tr>
+                </tbody>
+              </table>
+		    </div>
+
+            <div class="mb-3">
+              <h5>我家的狗</h5>
+              <button type="button" id="refreshMyBreedCenterList" class="btn btn-success btn-sm">刷新</button>
+            </div>
+
+            <div class="table-responsive">
+		      <table class="table table-striped table-sm" style="margin-top:17px; width: 500px" id="myBreedCenterTable">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>宠物标识</th>
+                    <th>代数</th>
+                    <th>级别</th>
+                    <th>价格</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="7" style="text-align: center;">数据加载中，请稍后...</td>
                   </tr>
                 </tbody>
               </table>
 		    </div>
 		  </div>
-		  <div class="options-right">
-		    <div style="padding:10px 0;" id="logCaptchaPanel" class="mb-4">
-              <form class="form-inline">
-                <div class="form-group mr-2">
-                  <img style="width:100px; height: 40px;" src="" id="buyVerifyImageAuto" alt="">
+		  <div class="options-right" style="width:500px">
+            <div class="mb-3">
+              <h5>选两个来交配</h5>
+              <label>价格：<font style="color:#F76707">500</font></label><label style="margin-left: 20px;">繁育时长：<font style="color:#F76707">14小时</font></label>
+              <button style="cursor:pointer;" type="button" id="buyVerifyRefresh" class="btn btn-light"><span data-feather="refresh-cw"></span></button>
+              <input style="width:120px;" type="text" id="buyVerifyCode">
+              <button type="button" id="breedBtn" class="btn btn-success btn-sm">交配</button>
+            </div>
+		    <div id="taPetDetail" style="width:450px; height:400px; background-color:#eee">
+              <div style="width:100%; background-color:#FFFDE7">
+				<img src="https://blockchain-pet-online.cdn.bcebos.com/PET_SVG_4af3fabe3561f225782f22934356a735" style="width: 29.314rem; height: 7.9855rem;"/>
+                <div style="position: relative; top: -1px; display: inline-block;">
+                  <i style="display: inline-block; height: 1.1rem; padding: 0 .1691rem; color: #fff; -webkit-border-radius: .0725rem; border-radius: .2725rem;
+                              font-size: .2899rem; margin-right: 2px; -webkit-box-sizing: border-box; box-sizing: border-box; line-height: 1.1rem;background:#F76707;width: 2.5rem;
+                              text-align: center;">--</i>
+                  <i style="display: inline-block; height: 1.1rem; padding: 0 .1691rem; color: #fff; -webkit-border-radius: .0725rem; border-radius: .2725rem;
+                              font-size: .2899rem; margin-right: 2px; -webkit-box-sizing: border-box; box-sizing: border-box; line-height: 1.1rem;background:#F76707;width: 2.5rem;
+                              text-align: center;">--</i>
                 </div>
-                <div class="form-group mr-2">
-                  <input style="width:120px;" type="text" class="form-control" id="buyVerifyCodeAuto">
-                </div>
-                <div class="form-group mr-2">
-                  <button style="cursor:pointer;" type="button" id="buyVerifyRefreshAuto" class="btn btn-light"><span data-feather="refresh-cw"></span></button>
-                </div>
-                <div class="form-group mr-2">
-                  <button type="button" id="logCaptchaSubmit" class="btn btn-success btn-sm">保存</button>
-                </div>
-                <div class="form-group" style="display: none;">
-                  <input type="hidden" name="buy-verify-seed" id="buyVerifySeedAuto" value="">
-                  <input type="hidden" name="buy-verify-time" id="buyVerifyTimeAuto" value="">
-                </div>
-              </form>
-              <div class="pt-3">
-                <p>提前准备的验证码会在购买时自动填充并提交~<br />
-                   本功能试验阶段且验证码会过期，请不要一次性打码太多
-                </p>
+              </div>
+              <div style="width:100%; ">
+                  <label>所有者：</label><label><font style="margin: 10px; color: #F76707;">---</font></label>
+                  <label>休息时间：</label><label><font style="margin: 10px; color: #F76707;">---</font></label>
+                  <label>可否繁育：</label><label><font style="margin: 10px; color: #F76707;">---</font></label>
+              </div>
+              <div>
+                  <label><h4>属性</h4></label>
+              </div>
+              <div >
+                  <ul class="ulList">
+                      <li class="liList">体型：---</li>
+                      <li class="liList">花纹：---</li>
+                      <li class="liList">眼睛：---</li>
+                      <li class="liList">眼睛色：---</li>
+                      <li class="liList">嘴巴：---</li>
+                      <li class="liList">肚皮色：---</li>
+                      <li class="liList">身体色：---</li>
+                      <li class="liList">花纹色：---</li>
+                  </ul>
               </div>
             </div>
-			<h5>打码记录<h6>（过期验证码将自动清理）</h6></h5>
-            <div style="padding:10px 0;">
-              <table class="table table-bordered" id="logCaptchaList">
-                <thead>
-                  <tr>
-                    <th width="100">图片</th>
-                    <th width="100">种子</th>
-                    <th>验证码</th>
-                    <th>添加时间</th>
-                  </tr>
-                </thead>
-                <tbody>
-                </tbody>
-              </table>
+            <div id="myPetDetail" style="width:450px; height:400px; margin-top:50px; background-color:#eee"">
+              <div style="width:100%; background-color:#FFFDE7">
+				<img src="https://blockchain-pet-online.cdn.bcebos.com/PET_SVG_4af3fabe3561f225782f22934356a735" style="width: 29.314rem; height: 7.9855rem;"/>
+                <div style="position: relative; top: -1px; display: inline-block;">
+                  <i style="display: inline-block; height: 1.1rem; padding: 0 .1691rem; color: #fff; -webkit-border-radius: .0725rem; border-radius: .2725rem;
+                              font-size: .2899rem; margin-right: 2px; -webkit-box-sizing: border-box; box-sizing: border-box; line-height: 1.1rem;background:#F76707;width: 2.5rem;
+                              text-align: center;">--</i>
+                  <i style="display: inline-block; height: 1.1rem; padding: 0 .1691rem; color: #fff; -webkit-border-radius: .0725rem; border-radius: .2725rem;
+                              font-size: .2899rem; margin-right: 2px; -webkit-box-sizing: border-box; box-sizing: border-box; line-height: 1.1rem;background:#F76707;width: 2.5rem;
+                              text-align: center;">--</i>
+                </div>
+              </div>
+              <div style="width:100%; ">
+                  <label>所有者：</label><label><font style="margin: 10px; color: #F76707;">---</font></label>
+                  <label>休息时间：</label><label><font style="margin: 10px; color: #F76707;">---</font></label>
+                  <label>可否繁育：</label><label><font style="margin: 10px; color: #F76707;">---</font></label>
+              </div>
+              <div>
+                  <label><h4>属性</h4></label>
+              </div>
+              <div >
+                  <ul class="ulList">
+                      <li class="liList">体型：---</li>
+                      <li class="liList">花纹：---</li>
+                      <li class="liList">眼睛：---</li>
+                      <li class="liList">眼睛色：---</li>
+                      <li class="liList">嘴巴：---</li>
+                      <li class="liList">肚皮色：---</li>
+                      <li class="liList">身体色：---</li>
+                      <li class="liList">花纹色：---</li>
+                  </ul>
+              </div>
             </div>
 		  </div>
         </main>
@@ -221,56 +272,22 @@
         </div>
       </div>
     </div>
-
-	<div class="modal fade" id="petDetail" role="dialog" aria-labelledby="buyModalCenterTitle" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="buyModalLongTitle">狗狗详情</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-			<div style="width:100%; background-color:#FFFDE7">
-				<img src="https://blockchain-pet-online.cdn.bcebos.com/PET_SVG_4af3fabe3561f225782f22934356a735" style="width: 29.314rem; height: 7.9855rem;"/>
-			</div>
-			<div style="width:100%; ">
-				<label>所有者：</label><label>王尼马</label>
-			</div>
-			<div>
-				<label><h4>属性</h4></label>
-			</div>
-			<div >
-				<ul class="ulList">
-					<li class="liList">体型：皮卡<font style="margin: 10px; color: #F76707;">稀有</font></li>
-					<li class="liList">花纹：霸气点<font style="display: none;"></font></li>
-					<li class="liList">眼睛：小杀气<font style="margin: 10px; color: #F76707;">稀有</font></li>
-					<li class="liList">眼睛色：土黄<font style="display: none;"></font></li>
-					<li class="liList">嘴巴：三瓣<font style="display: none;"></font></li>
-					<li class="liList">肚皮色：白色<font style="display: none;"></font></li>
-					<li class="liList">身体色：浅褐<font style="display: none;"></font></li>
-					<li class="liList">花纹色：变异橙<font style="margin: 10px; color: #F76707;">稀有</font></li>
-				</ul>
-			</div>
-          </div>
-        </div>
-      </div>
-	</div>
     
     <script type="text/javascript" src="js/libs/jquery.min.js"></script>
     <script type="text/javascript" src="js/libs/feather.min.js"></script>
     <script type="text/javascript" src="js/libs/popper.min.js"></script>
     <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
 
+    <script type="text/javascript" src="js/components/petdetail.js"></script>
+
     <script type="text/javascript" src="js/components/utils.js"></script>
     <script type="text/javascript" src="js/components/configurator.js"></script>
     <script type="text/javascript" src="js/components/alert.js"></script>
-    <script type="text/javascript" src="js/components/buyer.js"></script>
+    <script type="text/javascript" src="js/components/bc.js"></script>
 	<script type="text/javascript" src="js/components/center.js"></script>
+    <script type="text/javascript" src="js/components/grid.js"></script>
     
     <script type="text/javascript" src="js/app.js"></script>
-    <script type="text/javascript" src="js/buy.js"></script>
-	<script type="text/javascript" src="js/captcha.js"></script>
+    <script type="text/javascript" src="js/breedcenter.js"></script>
 </body>
 </html>

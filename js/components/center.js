@@ -11,7 +11,7 @@ var Center = {
         GetPetById: 'https://pet-chain.baidu.com/data/pet/queryPetById'
     },
 
-    getPetById : function(petId, modalId) {
+    getPetById : function(petId, selector) {
         $.ajax({
             type: 'POST',
             url: Center.ApiUrl.GetPetById,
@@ -32,13 +32,24 @@ var Center = {
                 }
 
                 var petInfo = res.data;
+                var degree = Configurator.getDegreeConf()[petInfo.rareDegree];
 
                 var detail = '\
                     <div style="width:100%; background-color:' + petInfo.bgColor + '";>\
                         <img src="' + petInfo.petUrl + '" style="width: 29.314rem; height: 7.9855rem;"/>\
+                        <div style="position: relative; top: -1px; display: inline-block;">\
+					        <i style="display: inline-block; height: 1.1rem; padding: 0 .1691rem; color: #fff; -webkit-border-radius: .0725rem; border-radius: .2725rem;\
+                                        font-size: .2899rem; margin-right: 2px; -webkit-box-sizing: border-box; box-sizing: border-box; line-height: 1.1rem;background:#F76707;width: 2.5rem;\
+                                        text-align: center;">' + petInfo.rareDegree + '</i>\
+                            <i style="display: inline-block; height: 1.1rem; padding: 0 .1691rem; color: #fff; -webkit-border-radius: .0725rem; border-radius: .2725rem;\
+                                        font-size: .2899rem; margin-right: 2px; -webkit-box-sizing: border-box; box-sizing: border-box; line-height: 1.1rem;background:#F76707;width: 2.5rem;\
+                                        text-align: center;">第' + petInfo.generation + '代</i>\
+                        </div>\
                     </div>\
                     <div style="width:100%; ">\
-                        <label>所有者：</label><label>' + petInfo.userName + '</label>\
+                        <label>所有者：</label><label><font style="margin: 10px; color: #F76707;">' + petInfo.userName + '</font></label>\
+                        <label>休息时间：</label><label><font style="margin: 10px; color: #F76707;">' + petInfo.coolingInterval + '</font></label>\
+                        <label>可否繁育：</label><label><font style="margin: 10px; color: #F76707;">' + (petInfo.isCooling ? "正在休息" : "可以繁育") + '</font></label>\
                     </div>\
                     <div>\
                         <label><h4>属性</h4></label>\
@@ -57,7 +68,7 @@ var Center = {
 
                 detail += '</ul></div>';
 
-                $('#' + modalId).find('.modal-body').html(detail);
+                $(selector).html(detail);
             }
         });
     },
