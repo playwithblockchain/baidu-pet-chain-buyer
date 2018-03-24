@@ -2,9 +2,9 @@
 
 <p>百度莱茨狗抢购插件</p>
 
-### Chrome商店地址
+### 使用文档
 
-https://chrome.google.com/webstore/detail/%E7%99%BE%E5%BA%A6%E8%8E%B1%E8%8C%A8%E7%8B%97/fgpcgbppajchcfdnphppkhkfhbpnmoji</p>
+https://github.com/playwithblockchain/baidu-pet-chain-buyer/wiki
 
 ### 打赏支持
 
@@ -29,6 +29,7 @@ https://chrome.google.com/webstore/detail/%E7%99%BE%E5%BA%A6%E8%8E%B1%E8%8C%A8%E
 
 ### 版本更新
 
+* 2017-02-22 2.1版发布，新增提前打码功能、新增多处提示、优化体验等
 * 2017-02-09 2.0版发布，全新界面化，支持手动输入验证码
 * 2017-02-05 支持配置买入价格
 * 2017-02-04 首次发布&开源
