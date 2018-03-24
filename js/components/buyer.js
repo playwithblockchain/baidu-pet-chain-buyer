@@ -16,9 +16,10 @@ var Buyer = {
     DegreeConf: Configurator.getDegreeConf(),
 
     InitLogCaptcha: function() {
-        Buyer.displayVerifyImage();
-        $('#buyVerifyRefresh').click(function(){
-            Buyer.displayVerifyImage();
+        Buyer.displayVerifyImageAuto();
+        $('#buyVerifyRefreshAuto').click(function(){
+            Buyer.displayVerifyImageAuto();
+	    $('#buyVerifyCodeAuto').val('').focus();
         });
 
         $('#logCaptchaPanel form').submit(function(){
@@ -26,7 +27,7 @@ var Buyer = {
             return false;
         });
 
-        $('#buyVerifyCode').keyup(function(){
+        $('#buyVerifyCodeAuto').keyup(function(){
             var verifyCode = $(this).val();
             if (verifyCode.length == 4) {
                 Buyer.submitCaptcha();
@@ -36,7 +37,7 @@ var Buyer = {
             Buyer.submitCaptcha();
         });
 
-        $('#buyVerifyCode').val('').focus();
+        $('#buyVerifyCodeAuto').val('').focus();
     },
 
     DisplayLogCaptcha: function() {
@@ -54,20 +55,20 @@ var Buyer = {
     },
 
     submitCaptcha: function() {
-        var verifySeed = $('#buyVerifySeed').val();
-        var verifyCode = $('#buyVerifyCode').val();
-        var verifyTime = $('#buyVerifyTime').val();
+        var verifySeed = $('#buyVerifySeedAuto').val();
+        var verifyCode = $('#buyVerifyCodeAuto').val();
+        var verifyTime = $('#buyVerifyTimeAuto').val();
         if (verifyCode == '' || verifyCode.length != 4) {
             Alert.Error("请填写4位验证码！", 3);
             return
         }
 
-        var verifySrc = $('#buyVerifyImage').attr('src');
+        var verifySrc = $('#buyVerifyImageAuto').attr('src');
 
         Configurator.saveLogCaptcha(verifySeed, verifyCode, verifySrc, verifyTime);
 
-        Buyer.displayVerifyImage();
-        $('#buyVerifyCode').val('').focus();
+        Buyer.displayVerifyImageAuto();
+        $('#buyVerifyCodeAuto').val('').focus();
         Buyer.DisplayLogCaptcha();
     },
 
@@ -99,15 +100,23 @@ var Buyer = {
             type: 'POST',
             url: Buyer.ApiUrl.QueryPetsOnSale,
             contentType : 'application/json',
+            dataType : "json",
             data: JSON.stringify({
                 "pageNo":pageNo,
-                "pageSize":20,
+                "pageSize":10,
                 "querySortType":"CREATETIME_DESC",
                 "petIds":[],
                 "lastAmount":null,
                 "lastRareDegree":null,
                 "requestId": new Date().getTime(),
                 "appId":1,
+                "filterCondition" : "{}",
+                "lastAmount" : "",
+                "lastRareDegree" : "",
+                "type" : null,
+                "token" : null,
+                "nounce" : null,
+                "timeStamp" : null,
                 "tpl":""
             }),
             success:function(res){
@@ -127,13 +136,13 @@ var Buyer = {
                         needToBuyColor = 'red';
                     }
 
-                    th += '<tr>\
+                    th += '<tr data=' + JSON.stringify(pet) + '>\
                         <td>' + i + '</td>\
                         <td>' + pet.id + '</td>\
-                        <td>' + pet.petId + '</td>\
                         <td>第' + pet.generation + '代</td>\
                         <td><font color="' + degree.color + '">' + degree.desc + '</font></td>\
                         <td><font color="' + needToBuyColor + '">' + pet.amount + '</font></td>\
+                        <td><input name="buy" type="button" value="购买"/><input name="detailBtn" type="button" value="查看"/></td>\
                     </tr>';
                 }
 
@@ -212,6 +221,32 @@ var Buyer = {
                 $('#buyModalCenter').modal('hide');
             }, 1*1000);
             return;
+        }
+
+        $.ajax({
+            type: 'GET',
+            url: Buyer.ApiUrl.CaptchaGen,
+            contentType : 'application/json',
+            data: {
+                "requestId": new Date().getTime(),
+                "appId":1,
+                "tpl":""
+            },
+            success:function(res){
+                var seed = res.data.seed;
+                var src = 'data:image/jpeg;base64,'+res.data.img;
+                var time = Configurator.dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss");
+                _display(seed, src, '', time);
+            }
+        });
+    },
+
+    displayVerifyImageAuto: function(captcha) {
+        var _display = function(seed, src, code, time) {
+            $("#buyVerifySeedAuto").val(seed);
+            $('#buyVerifyImageAuto').attr('src', src);
+            $('#buyVerifyCodeAuto').val(code);
+            $('#buyVerifyTimeAuto').val(time);
         }
 
         $.ajax({

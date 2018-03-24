@@ -11,7 +11,7 @@ var Center = {
         GetPetById: 'https://pet-chain.baidu.com/data/pet/queryPetById'
     },
 
-    getPetById : function(petId, modalId) {
+    getPetById : function(petId, selector) {
         $.ajax({
             type: 'POST',
             url: Center.ApiUrl.GetPetById,
@@ -32,13 +32,24 @@ var Center = {
                 }
 
                 var petInfo = res.data;
+                var degree = Configurator.getDegreeConf()[petInfo.rareDegree];
 
                 var detail = '\
                     <div style="width:100%; background-color:' + petInfo.bgColor + '";>\
                         <img src="' + petInfo.petUrl + '" style="width: 29.314rem; height: 7.9855rem;"/>\
+                        <div style="position: relative; top: -1px; display: inline-block;">\
+					        <i style="display: inline-block; height: 1.1rem; padding: 0 .1691rem; color: #fff; -webkit-border-radius: .0725rem; border-radius: .2725rem;\
+                                        font-size: .2899rem; margin-right: 2px; -webkit-box-sizing: border-box; box-sizing: border-box; line-height: 1.1rem;background:#F76707;width: 2.5rem;\
+                                        text-align: center;">' + petInfo.rareDegree + '</i>\
+                            <i style="display: inline-block; height: 1.1rem; padding: 0 .1691rem; color: #fff; -webkit-border-radius: .0725rem; border-radius: .2725rem;\
+                                        font-size: .2899rem; margin-right: 2px; -webkit-box-sizing: border-box; box-sizing: border-box; line-height: 1.1rem;background:#F76707;width: 2.5rem;\
+                                        text-align: center;">第' + petInfo.generation + '代</i>\
+                        </div>\
                     </div>\
                     <div style="width:100%; ">\
-                        <label>所有者：</label><label>' + petInfo.userName + '</label>\
+                        <label>所有者：</label><label><font style="margin: 10px; color: #F76707;">' + petInfo.userName + '</font></label>\
+                        <label>休息时间：</label><label><font style="margin: 10px; color: #F76707;">' + petInfo.coolingInterval + '</font></label>\
+                        <label>可否繁育：</label><label><font style="margin: 10px; color: #F76707;">' + (petInfo.isCooling ? "正在休息" : "可以繁育") + '</font></label>\
                     </div>\
                     <div>\
                         <label><h4>属性</h4></label>\
@@ -57,7 +68,7 @@ var Center = {
 
                 detail += '</ul></div>';
 
-                $('#' + modalId).find('.modal-body').html(detail);
+                $(selector).html(detail);
             }
         });
     },
@@ -108,6 +119,7 @@ var Center = {
                 var th = '';
                 for (var i = 0; i <= petsList.length - 1; i++) {
                     var pet = petsList[i];
+		    pet["rowNum"] = i;
                     
                     var degree = degreeConfig[pet.rareDegree];
                     
@@ -218,7 +230,7 @@ var Center = {
         });
     },
 
-    cancel : function(petId) {
+    cancel : function(pet) {
         $.ajax({
             type: 'POST',
             url: Center.ApiUrl.CancelSalePet,
@@ -226,7 +238,7 @@ var Center = {
             data: JSON.stringify({
                 "appId":1,
                 "nounce":null,
-                "petId":petId,
+                "petId":pet.petId,
                 "requestId": new Date().getTime(),
                 "timeStamp":null,
                 "token":null,
@@ -235,6 +247,9 @@ var Center = {
             success:function(res){
                 if (res.errorNo == "00") {
                     Alert.Success("狗狗下架成功！", 2);
+
+		    pet.amount = 0;
+		    Center.updateMinePetList(pet);
                 } else {
                     Alert.Error(res.errorMsg, 2);
                 }
@@ -242,15 +257,16 @@ var Center = {
         });
     },
 
-    cancelAll : function(petIdArray) {
-        for (var i = 0; i < petIdArray.length; i++) {
-            var petId = petIdArray[i];
-
-            Center.cancel(petId);
+    cancelAll : function(petArray) {
+        for (var i = 0; i < petArray.length; i++) {
+            var pet = petArray[i];
+	    if (pet) {
+	        Center.cancel(pet);
+            }
         }
     },
 
-    sale : function(petId, amount) {
+    sale : function(pet, amount) {
         $.ajax({
             type: 'POST',
             url: Center.ApiUrl.SalePet,
@@ -259,7 +275,7 @@ var Center = {
                 "amount": amount,
                 "appId":1,
                 "nounce":null,
-                "petId":petId,
+                "petId":pet.petId,
                 "requestId": new Date().getTime(),
                 "timeStamp":null,
                 "token":null,
@@ -268,6 +284,9 @@ var Center = {
             success:function(res){
                 if (res.errorNo == "00") {
                     Alert.Success("狗狗上架成功！", 2);
+
+		    pet.amount = amount;
+		    Center.updateMinePetList(pet);
                 } else {
                     Alert.Error(res.errorMsg, 2);
                 }
@@ -275,13 +294,30 @@ var Center = {
         });
     },
 
-    batchSale : function(petIds, amount) {
-        var petIdArray = petIds.split(",");
-        
-        for(var i = 0; i < petIdArray.length; i++) {
-            var petId = petIdArray[i];
-
-            Center.sale(petId, amount);
+    batchSale : function(petArray, amount) {        
+        for(var i = 0; i < petArray.length; i++) {
+            var pet = petArray[i];
+			if (pet) {
+				Center.sale(pet, amount);
+			}
         }
+    },
+	
+    updateMinePetList : function(pet) {
+        var trList = $("#petsList").children("tbody").children("tr");
+
+	var index = parseInt(pet.rowNum);
+
+	// 更新行的JSON数据
+	$(trList[index]).attr("data", JSON.stringify(pet));
+
+	// 设置 checkbox未选中
+	$(trList[index]).find("input[type='checkbox']").prop('checked', false);
+
+	// 设置各列的值（目前只有金额）
+	$($(trList[index]).find("td")[4]).html(pet.amount);
+
+	// 按钮文字更新
+	$(trList[index]).find(".saleBtn").attr("value", pet.amount > 0 ? "下架" : "上架");
     }
 };

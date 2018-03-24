@@ -43,7 +43,7 @@ var Configurator = {
         $.each(degreeConf,function(k, v) {
             th += '<tr class="confItem">\
                     <td><span>' + v.desc + '</span>\<input type="text" name="id" value="' + k + '" style="display:none;" /></td>\
-                    <td><input type="text" name="color" value="' + v.color + '"/></td>\
+                    <td><input type="text" name="color" style="color:' + v.color + ';" value="' + v.color + '"/></td>\
                     <td><input type="text" name="buyAmount" value="' + v.buyAmount + '" class="editBox input-large" /></td>\
                 </tr>';
         });
@@ -58,9 +58,9 @@ var Configurator = {
 
                 var id = $(item).find("input[name=id]").val();
                 var buyAmount = $(item).find("input[name=buyAmount]").val();
-				var color = $(item).find("input[name=color]").val();
+		var color = $(item).find("input[name=color]").val();
                 degreeConf[id].buyAmount = buyAmount;
-				degreeConf[id].color = color;
+		degreeConf[id].color = color;
             }
 			
             Utils.setStorage("degreeConf", degreeConf);

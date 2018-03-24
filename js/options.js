@@ -5,4 +5,8 @@
 $(function(){
     Configurator.displayDegreeConf(); 
     Configurator.saveDegreeConf(); 
+
+    $("input[name='color']").on("keyup", function() {
+        $(this).css("color", $(this).val());
+    });
 });

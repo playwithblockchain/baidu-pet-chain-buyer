@@ -2,17 +2,11 @@
  * @author t@tabalt.net
  */
 $(function(){
+    BreedCenter.myBreedPetList(1);
+
     var autoRefreshTaskId = "";
 
     var pageNo = 1;
-
-    // 购买窗口初使化
-    Buyer.InitBuyModal();
-
-    // 购买任务
-    setInterval(function(){
-        Buyer.TryBuyPets();
-    }, 100);
 
     $("#refreshType").attr("disabled", "disabled").click(function() {
         if ("手动刷新" == $(this).html()) {
@@ -31,51 +25,55 @@ $(function(){
 
             Alert.Success("开始自动刷新！！", 2);
 
-            initAutoBuy();
+            initAutoTask();
         }
     });
 
     $("#refresh").attr("disabled", true).click(function() {
         $(this).html("刷新购买（" + pageNo + "页）");
 
-        Buyer.ShowPetsOnSale(pageNo);
+        BreedCenter.breedCenterList(pageNo);
 
         pageNo ++;
     });
 
-    $("tbody").on("click", "input[name='detailBtn']", function(e) {
+    $("#refreshMyBreedCenterList").click(function() {
+        BreedCenter.myBreedPetList(1);
+
+        Alert.Success("刷新成功！", 2);
+    });
+
+    $("tbody").on("click", "input[name='taPetDetailBtn']", function(e) {
         e.stopPropagation();
 
         var pet = $.parseJSON($(this).parent().parent().attr("data"));
 
-        Center.getPetById(pet.petId, "#petDetail .modal-body");
-
-        $('#petDetail').modal('show');
+        Center.getPetById(pet.petId, "#taPetDetail");
     });
 
-    $("tbody").on("click", "input[name='buy']", function(e) {
+    $("tbody").on("click", "input[name='myPetDetailBtn']", function(e) {
         e.stopPropagation();
 
         var pet = $.parseJSON($(this).parent().parent().attr("data"));
 
-        var degree = Buyer.DegreeConf[pet.rareDegree] || {desc:'未知',buyAmount:'5.00'};
-
-        var captcha = Configurator.consumeLogCaptcha();
-
-        Buyer.displayBuyModal(degree, pet, captcha);
+        Center.getPetById(pet.petId, "#myPetDetail");
     });
 
-    function initAutoBuy() {
+    $("tbody").on("click", "input[name='choose']", function(e) {
+        e.stopPropagation();
+    });
+
+    function initAutoTask() {
         if (autoRefreshTaskId != '' && autoRefreshTaskId != null && autoRefreshTaskId != 'undefined') {
-	    clearInterval(autoRefreshTaskId);
-	}
+	        clearInterval(autoRefreshTaskId);
+	    }
 
-	autoRefreshTaskId = setInterval(function(){
-	    Buyer.ShowPetsOnSale(1);
-	}, 2000);
+        autoRefreshTaskId = setInterval(function(){
+            BreedCenter.breedCenterList(1);
+        }, 2000);
 
-	$("#refreshType").attr("disabled", false);
+	    $("#refreshType").attr("disabled", false);
     }
 
-    initAutoBuy();
+    initAutoTask();
 });
