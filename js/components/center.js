@@ -8,6 +8,8 @@ var Center = {
         OrderList: 'https://pet-chain.baidu.com/data/user/order/list',
         CancelSalePet : 'https://pet-chain.baidu.com/data/market/unsalePet',
         SalePet : 'https://pet-chain.baidu.com/data/market/salePet',
+        BreedPet : 'https://pet-chain.baidu.com/data/market/breed/shelf',
+        CancelBreedPet : 'https://pet-chain.baidu.com/data/market/breed/offShelf',
         GetPetById: 'https://pet-chain.baidu.com/data/pet/queryPetById'
     },
 
@@ -120,16 +122,16 @@ var Center = {
                 for (var i = 0; i <= petsList.length - 1; i++) {
                     var pet = petsList[i];
 		    pet["rowNum"] = i;
-                    
+
                     var degree = degreeConfig[pet.rareDegree];
-                    
+
                     th += '<tr data=' + JSON.stringify(pet) + '>\
                         <td> <input type="checkbox" />' + ((pageNo - 1) * pageSize + i + 1) + '</td>\
                         <td><img style="width:40px" src="' + pet.petUrl + '"/></td>\
                         <td>第' + pet.generation + '代</td>\
                         <td><font color="' + degree.color + '">' + degree.desc + '</font></td>\
                         <td><font color="">' + pet.amount + '</font></td>\
-                        <td><input class="saleBtn" type="button" value="' + (parseFloat(pet.amount) > 0 ? "下架" : "上架") + '"/><input class="detailBtn" type="button" value="查看"/></td>\
+                        <td><input class="saleBtn" type="button" value="' + (parseFloat(pet.amount) > 0 && pet.shelfStatus == 1 ? "下架" : "上架") + '" '+ (pet.shelfStatus == 2 ? "disabled" : "") +'/><input class="breedBtn" type="button" value="'+ (pet.shelfStatus == 2 ? "待繁育" : "繁育")  +'" '+ (parseFloat(pet.amount) > 0 && pet.shelfStatus == 1 ? "disabled" : "") +'/><input class="detailBtn" type="button" value="查看"/></td>\
                     </tr>';
                 }
 
@@ -187,9 +189,9 @@ var Center = {
                 var th = '';
                 for (var i = 0; i <= petsOrderList.length - 1; i++) {
                     var pet = petsOrderList[i];
-                    
+
                     var degree = degreeConfig[pet.rareDegree];
-                    
+
                     th += '<tr data=' + JSON.stringify(pet) + '>\
                         <td> ' + ((pageNo - 1) * pageSize + i + 1) + '</td>\
                         <td><img style="width:40px" src="' + pet.petUrl + '"/></td>\
@@ -285,8 +287,8 @@ var Center = {
                 if (res.errorNo == "00") {
                     Alert.Success("狗狗上架成功！", 2);
 
-		    pet.amount = amount;
-		    Center.updateMinePetList(pet);
+            pet.amount = amount;
+            Center.updateMinePetList(pet);
                 } else {
                     Alert.Error(res.errorMsg, 2);
                 }
@@ -294,15 +296,75 @@ var Center = {
         });
     },
 
-    batchSale : function(petArray, amount) {        
+    batchSale : function(petArray, amount) {
         for(var i = 0; i < petArray.length; i++) {
             var pet = petArray[i];
-			if (pet) {
-				Center.sale(pet, amount);
-			}
+            if (pet) {
+                Center.sale(pet, amount);
+            }
         }
     },
-	
+
+    breed : function(pet, amount) {
+        $.ajax({
+            type: 'POST',
+            url: Center.ApiUrl.BreedPet,
+            contentType : 'application/json',
+            data: JSON.stringify({
+                "amount": amount,
+                "appId":1,
+                "nounce":null,
+                "petId":pet.petId,
+                "requestId": new Date().getTime(),
+                "timeStamp":null,
+                "token":null,
+                "tpl":""
+            }),
+            success:function(res){
+                if (res.errorNo == "00") {
+                    Alert.Success("狗狗繁育上架成功！", 2);
+                    pet.amount = amount;
+                    Center.updateMinePetList(pet);
+                } else {
+                    Alert.Error(res.errorMsg, 2);
+                }
+            }
+        });
+    },
+    batchBreed : function(petArray, amount) {
+        for(var i = 0; i < petArray.length; i++) {
+            var pet = petArray[i];
+            if (pet) {
+                Center.breed(pet, amount);
+            }
+        }
+    },
+    cancelBreed : function(pet) {
+        $.ajax({
+            type: 'POST',
+            url: Center.ApiUrl.CancelBreedPet,
+            contentType : 'application/json',
+            data: JSON.stringify({
+                "appId":1,
+                "nounce":null,
+                "petId":pet.petId,
+                "requestId": new Date().getTime(),
+                "timeStamp":null,
+                "token":null,
+                "tpl":""
+            }),
+            success:function(res){
+                if (res.errorNo == "00") {
+                    Alert.Success("狗狗繁育下架成功！", 2);
+                    pet.amount = 0;
+                    Center.updateMinePetList(pet);
+                } else {
+                    Alert.Error(res.errorMsg, 2);
+                }
+            }
+        });
+    },
+
     updateMinePetList : function(pet) {
         var trList = $("#petsList").children("tbody").children("tr");
 
