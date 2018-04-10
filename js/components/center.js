@@ -196,7 +196,7 @@ var Center = {
                         <td> ' + ((pageNo - 1) * pageSize + i + 1) + '</td>\
                         <td><img style="width:40px" src="' + pet.petUrl + '"/></td>\
                         <td>' + pet.transDate + '</td>\
-                        <td><font color="' + (pet.status == 1 ? "red" : "") + '">' + (pet.status == 1 ? "+" : "") + (pet.amount * (pet.status == 1 ? 1 : -1)) + '</font></td>\
+                        <td><font color="' + (pet.status == 1 || pet.status == 3 ? "red" : "") + '">' + (pet.status == 1 || pet.status == 3 ? "+" : "") + (pet.amount * (pet.status == 1 || pet.status == 3 ? 1 : -1)) + '</font></td>\
                         <td><input class="detailBtn" type="button" value="查看"/></td>\
                     </tr>';
                 }
