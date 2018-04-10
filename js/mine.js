@@ -26,7 +26,7 @@ $(function(){
         for (var i = 0; i < petList.length; i++) {
             if ($(petList[i]).find("input[type='checkbox']").prop('checked')) {
                 var pet = $.parseJSON($(petList[i]).attr("data"));
-                
+
                 if (parseFloat(pet.amount) > 0) {
                     petArray[i] = pet;
                 }
@@ -90,10 +90,69 @@ $(function(){
         if ($(this).attr("value") == "上架") {
             $("#petIdsForSale").val(JSON.stringify(petArray));
 
-	    $("#amount").val("").focus();
+            $("#amount").val("").focus();
             $('#saleModal').modal('show');
         } else {
             Center.cancel(pet);
+        }
+    });
+
+
+
+
+
+    $("#batchBreed").click(function () {
+        var petList = $("#petsList").children("tbody").children("tr");
+
+        var petArray = new Array();
+        for (var i = 0; i < petList.length; i++) {
+            if ($(petList[i]).find("input[type='checkbox']").prop('checked')) {
+                var pet = $.parseJSON($(petList[i]).attr("data"));
+                if (pet.amount == 0) {
+                    petArray[i] = pet;
+                }
+            }
+        }
+
+        if (petArray.length > 0) {
+            $("#petIdsForBreed").val(JSON.stringify(petArray));
+
+            $("#breedAmount").val("").focus();
+            $('#breedModal').modal('show');
+        } else {
+            Alert.Error("请选择你想繁育的狗狗！！", 2);
+        }
+    });
+    $("#breed").click(function () {
+        $(".amountError").html("");
+
+        var petArray = $.parseJSON($("#petIdsForBreed").val());
+        var amount = $("#breedAmount").val();
+
+        if (amount == '' || amount == 'undefined' || parseFloat(amount) <= 0) {
+            $(".breedAamountError").html("金额必需大于等于0！！");
+            $("#breedAmount").focus();
+            return false;
+        }
+
+        Center.batchBreed(petArray, amount);
+
+        $('#breedModal').modal('hide');
+    });
+    $("tbody").on("click", ".breedBtn", function(e) {
+        e.stopPropagation();
+
+        var pet = $.parseJSON($(this).parent().parent().attr("data"));
+        var petArray = new Array();
+        petArray[0] = pet;
+
+        if ($(this).attr("value") == "繁育") {
+            $("#petIdsForBreed").val(JSON.stringify(petArray));
+
+            $("#breedAmount").val("").focus();
+            $('#breedModal').modal('show');
+        } else {
+            Center.cancelBree(pet);
         }
     });
 
