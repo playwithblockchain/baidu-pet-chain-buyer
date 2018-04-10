@@ -152,7 +152,7 @@ $(function(){
             $("#breedAmount").val("").focus();
             $('#breedModal').modal('show');
         } else {
-            Center.cancelBree(pet);
+            Center.cancelBreed(pet);
         }
     });
 
