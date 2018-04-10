@@ -40,7 +40,7 @@ var Center = {
                     <div style="width:100%; background-color:' + petInfo.bgColor + '";>\
                         <img src="' + petInfo.petUrl + '" style="width: 29.314rem; height: 7.9855rem;"/>\
                         <div style="position: relative; top: -1px; display: inline-block;">\
-					        <i style="display: inline-block; height: 1.1rem; padding: 0 .1691rem; color: #fff; -webkit-border-radius: .0725rem; border-radius: .2725rem;\
+                            <i style="display: inline-block; height: 1.1rem; padding: 0 .1691rem; color: #fff; -webkit-border-radius: .0725rem; border-radius: .2725rem;\
                                         font-size: .2899rem; margin-right: 2px; -webkit-box-sizing: border-box; box-sizing: border-box; line-height: 1.1rem;background:#F76707;width: 2.5rem;\
                                         text-align: center;">' + petInfo.rareDegree + '</i>\
                             <i style="display: inline-block; height: 1.1rem; padding: 0 .1691rem; color: #fff; -webkit-border-radius: .0725rem; border-radius: .2725rem;\
@@ -121,7 +121,7 @@ var Center = {
                 var th = '';
                 for (var i = 0; i <= petsList.length - 1; i++) {
                     var pet = petsList[i];
-		    pet["rowNum"] = i;
+            pet["rowNum"] = i;
 
                     var degree = degreeConfig[pet.rareDegree];
 
@@ -131,7 +131,7 @@ var Center = {
                         <td>第' + pet.generation + '代</td>\
                         <td><font color="' + degree.color + '">' + degree.desc + '</font></td>\
                         <td><font color="">' + pet.amount + '</font></td>\
-                        <td><input class="saleBtn" type="button" value="' + (parseFloat(pet.amount) > 0 && pet.shelfStatus == 1 ? "下架" : "上架") + '" '+ (pet.shelfStatus == 2 ? "disabled" : "") +'/><input class="breedBtn" type="button" value="'+ (pet.shelfStatus == 2 ? "待繁育" : "繁育")  +'" '+ (parseFloat(pet.amount) > 0 && pet.shelfStatus == 1 ? "disabled" : "") +'/><input class="detailBtn" type="button" value="查看"/></td>\
+                        <td><input class="saleBtn" type="button" value="' + (parseFloat(pet.amount) > 0 && pet.shelfStatus == 1 ? "下架" : "上架") + '" '+ (pet.shelfStatus == 2 || pet.lockStatus == 1 ? "disabled" : "") +'/><input class="breedBtn" type="button" value="'+ (pet.shelfStatus !=2 ? pet.coolingInterval != "0分钟" ? "休息中" : "繁育" : "取消繁育")  +'" '+ ((parseFloat(pet.amount) > 0 && pet.shelfStatus == 1) || pet.lockStatus == 1 || pet.coolingInterval != "0分钟" ? "disabled" : "") +'/><input class="detailBtn" type="button" value="查看"/></td>\
                     </tr>';
                 }
 
@@ -250,8 +250,8 @@ var Center = {
                 if (res.errorNo == "00") {
                     Alert.Success("狗狗下架成功！", 2);
 
-		    pet.amount = 0;
-		    Center.updateMinePetList(pet);
+            pet.amount = 0;
+            Center.updateMinePetList(pet);
                 } else {
                     Alert.Error(res.errorMsg, 2);
                 }
@@ -262,8 +262,8 @@ var Center = {
     cancelAll : function(petArray) {
         for (var i = 0; i < petArray.length; i++) {
             var pet = petArray[i];
-	    if (pet) {
-	        Center.cancel(pet);
+        if (pet) {
+            Center.cancel(pet);
             }
         }
     },
@@ -368,18 +368,18 @@ var Center = {
     updateMinePetList : function(pet) {
         var trList = $("#petsList").children("tbody").children("tr");
 
-	var index = parseInt(pet.rowNum);
+    var index = parseInt(pet.rowNum);
 
-	// 更新行的JSON数据
-	$(trList[index]).attr("data", JSON.stringify(pet));
+    // 更新行的JSON数据
+    $(trList[index]).attr("data", JSON.stringify(pet));
 
-	// 设置 checkbox未选中
-	$(trList[index]).find("input[type='checkbox']").prop('checked', false);
+    // 设置 checkbox未选中
+    $(trList[index]).find("input[type='checkbox']").prop('checked', false);
 
-	// 设置各列的值（目前只有金额）
-	$($(trList[index]).find("td")[4]).html(pet.amount);
+    // 设置各列的值（目前只有金额）
+    $($(trList[index]).find("td")[4]).html(pet.amount);
 
-	// 按钮文字更新
-	$(trList[index]).find(".saleBtn").attr("value", pet.amount > 0 ? "下架" : "上架");
+    // 按钮文字更新
+    $(trList[index]).find(".saleBtn").attr("value", pet.amount > 0 ? "下架" : "上架");
     }
 };
